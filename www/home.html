@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Início · PetTok</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="CSS/home.css">
+<link rel="stylesheet" href="CSS/configuracoes.css">
+</head>
+<body>
+
+  <div class="phone">
+
+    <!-- MAPA (embed simples, sem API key — depois trocar pela Maps JavaScript API) -->
+    <iframe
+      class="map-frame"
+      src="https://maps.google.com/maps?q=São+Paulo&z=13&output=embed"
+      loading="lazy"
+      allowfullscreen>
+    </iframe>
+
+    <!-- CARTÃO DE BUSCA -->
+    <div class="search-card">
+      <span>Qual pet deseja adotar?</span>
+      <div class="filter-btn" id="openFilter" aria-label="Abrir filtros">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" y1="6" x2="20" y2="6"/><circle cx="9" cy="6" r="2" fill="#fff"/>
+          <line x1="4" y1="12" x2="20" y2="12"/><circle cx="15" cy="12" r="2" fill="#fff"/>
+          <line x1="4" y1="18" x2="20" y2="18"/><circle cx="11" cy="18" r="2" fill="#fff"/>
+        </svg>
+        <span class="filter-badge" id="filterBadge">0</span>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" aria-label="Início">
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+  
+      </button>
+
+      <button class="nav-item" aria-label="Cadastro" 
+      onclick="window.location.href='cadastroPet.html'">
+
+
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14"/>
+          <path d="M5 12h14"/>
+        </svg>
+
+      </button>
+      <div class="nav-center"title="Feed" 
+      onclick="window.location.href='feed.html'">
+      </div>
+      <button
+            class="nav-item"
+            title="Mensagens"
+            id="messagesBtn"
+            onclick="window.location.href='conversas.html'"
+            >
+
+            <svg viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round">
+
+                <path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2 1.5-4A7.5 7.5 0 1 1 20 11.5Z"></path>
+
+            </svg>
+
+        </button>
+      <button class="nav-item" aria-label="Perfil" onclick="window.location.href='perfil.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+ 
+      </button>
+    </nav>
+
+    <!-- PAINEL DE FILTROS -->
+    <div class="filter-overlay" id="filterOverlay">
+      <div class="filter-panel">
+
+        <div class="filter-panel-header">
+          <h2>Filtrar pets</h2>
+          <button class="close-filter" id="closeFilter" aria-label="Fechar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#4a4a4a" stroke-width="2.4" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"/><line x1="20" y1="4" x2="4" y2="20"/></svg>
+          </button>
+        </div>
+
+        <div class="filter-group">
+          <h3>Tipo de pet</h3>
+          <div class="chip-row" data-group="tipo">
+            <button class="chip" data-value="cachorro">Cachorro</button>
+            <button class="chip" data-value="gato">Gato</button>
+            <button class="chip" data-value="outro">Outro</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3>Porte</h3>
+          <div class="chip-row" data-group="porte">
+            <button class="chip" data-value="pequeno">Pequeno</button>
+            <button class="chip" data-value="medio">Médio</button>
+            <button class="chip" data-value="grande">Grande</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3>Idade</h3>
+          <div class="chip-row" data-group="idade">
+            <button class="chip" data-value="filhote">Filhote</button>
+            <button class="chip" data-value="adulto">Adulto</button>
+            <button class="chip" data-value="idoso">Idoso</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3>Saúde</h3>
+          <div class="chip-row" data-group="saude">
+            <button class="chip" data-value="vacinado">Vacinado</button>
+            <button class="chip" data-value="castrado">Castrado</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h3>Distância</h3>
+          <div class="range-row">
+            <input type="range" id="distanceRange" min="1" max="50" value="10">
+            <span class="range-value" id="distanceValue">10 km</span>
+          </div>
+        </div>
+
+        <button class="apply-btn" id="applyFilters">Aplicar filtros</button>
+        <button class="clear-btn" id="clearFilters">Limpar tudo</button>
+
+      </div>
+    </div>
+
+  </div>
+  <script src="JS/tema.js"></script>
+  <script src="JS/home.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="JS/feed.js"></script>
+
+
+</body>
+</html>
